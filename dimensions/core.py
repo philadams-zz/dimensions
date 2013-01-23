@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 Phil Adams http://philadams.net
@@ -85,11 +86,12 @@ class PNGFile(object):
         return data
 
 
-def main():
+def dimensions():
     import argparse
 
     # populate and parse command line options
-    desc = 'Read the width, height, and rotation of images.'
+    desc = 'Read the width and height of images.'
+    desc += '\nhttp://github.com/philadams/dimensions'
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('-v', '--verbose', action='count', default=0)
     parser.add_argument('filenames', nargs='+',
@@ -108,8 +110,8 @@ def main():
         with open(filename, 'rb') as fp:
             png = PNGFile(fp)
         x, y = png.size
-        print('%s\n  width: %d\n  height: %d' % (filename, x, y))
+        print('%s (%d, %d)' % (filename, x, y))
 
 
 if '__main__' == __name__:
-    main()
+    dimensions()

@@ -1,9 +1,4 @@
 MANIFEST
 
-CHANGES.txt
-requirements.txt
-setup.py
-dimensions/
 docs/
 tests/
-fabfile.py
