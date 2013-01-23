@@ -3,6 +3,13 @@ dimensions
 
 A pure Python library for reading the width and height of images.
 
+installation
+------------
+
+`pip install dimensions`
+
+Done.
+
 usage
 -----
 
