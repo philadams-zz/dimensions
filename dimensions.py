@@ -16,35 +16,73 @@ SIGNATURE = '\211PNG\r\n\032\n'
 
 
 class Chunk(object):
-    """A PNG Chunk.
-    Parses one chunk from a PNG stream (file reader interface) into 4 fields:
+    """A PNG Chunk is composed of 4 fields:
         - a length (4 byte unsigned int)
-        - a chunk type (4 bytes, chars)
+        - a type (4 bytes, chars)
         - data (length bytes, various)
         - crc (4 bytes)
-    Chunk does not close or otherwise mess with the stream. Chunk should be
-    subclassed to handle parsing of the data field for specific chunks, e.g.
-    IHDR or IDAT.
     Note: all integer values in PNG streams are big endian"""
 
     _length = struct.Struct('>L')
-    _chunk_type = struct.Struct('cccc')
+    _type = struct.Struct('cccc')
+    _crc = 4
+    _end_type = 'IEND'
+
+
+class PNGFile(object):
+    """A PNG Image"""
 
     def __init__(self, fp):
         self.fp = fp
-        raw = fp.read(Chunk._length.size)
-        self.length = int(Chunk._length.unpack(raw)[0])
-        raw = fp.read(Chunk._chunk_type.size)
-        self.chunk_type = ''.join(Chunk._chunk_type.unpack(raw))
-        self.data_raw = fp.read(self.length)
-        self.crc_raw = fp.read(4)
+        self.chunks = []
+        self._load()
+        self.header = self.chunks[0]['data']
+        self.size = (self.header['width'], self.header['height'])
 
+    def _load(self):
 
-class IDHRChunk(Chunk):
-    """A PNG IDHR chunk.
-    Parses the chunk's data field according to:
-    TODO"""
-    pass
+        # confirm PNG format
+        magic = self.fp.read(len(SIGNATURE))
+        if magic != SIGNATURE:
+            # TODO: raise appropriate exception
+            print('%s is not PNG signature' % magic)
+            exit()
+
+        # parse chunk stream
+        l, t, c = Chunk._length, Chunk._type, Chunk._crc
+        while True:
+
+            # parse a chunk
+            chunk = {}
+            chunk['length'] = l.unpack(self.fp.read(l.size))[0]
+            chunk['type'] = ''.join(t.unpack(self.fp.read(t.size)))
+            parse_data = '%s_data' % chunk['type']
+            if hasattr(self, parse_data):
+                chunk['data'] = getattr(self, parse_data)()
+            else:
+                chunk['data'] = self.fp.read(chunk['length'])
+            chunk['crc'] = self.fp.read(c)
+
+            # store in chunks dict
+            self.chunks.append(chunk)
+            if chunk['type'] == Chunk._end_type:
+                break
+            # for now, we just need the IHDR chunk
+            if chunk['type'] == 'IHDR':
+                break
+
+    def IHDR_data(self):
+        dim = struct.Struct('>L')
+        sbyte = struct.Struct('c')
+        data = {}
+        data['width'] = dim.unpack(self.fp.read(dim.size))[0]
+        data['height'] = dim.unpack(self.fp.read(dim.size))[0]
+        data['bit_depth'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        data['color_type'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        data['compression_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        data['filter_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        data['interlace_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        return data
 
 
 def main():
@@ -65,30 +103,10 @@ def main():
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
 
-    # read whole file into list of bytes
-    #data = []
-    #with open(args.filename, 'rb') as f:
-    #    while True:
-    #        block = f.read(1)
-    #        if not block:
-    #            break
-    #        data.append(block)
-    #print map(None, data[:8])
-    #print map(None, data[8:12])
-    #print map(ord, data[8:12])
-    #print struct.unpack('>L', ''.join(data[8:12]))
-    #print map(None, data[12:16])
-
-    # parse PNG:
-    #   first, the magic signature (8 bytes)
-    #   then a series of chunks
     with open(args.filename, 'rb') as fp:
-        magic = fp.read(8)
-        if magic != SIGNATURE:
-            print('%s is not PNG signature' % magic)
-            exit()
-        ihdr = Chunk(fp)
-        print 'reading chunks correctly:', ihdr.chunk_type, ihdr.length
+        png = PNGFile(fp)
+    x, y = png.size
+    print('%s\n  width: %d\n  height: %d' % (args.filename, x, y))
 
 
 if '__main__' == __name__:
