@@ -92,7 +92,8 @@ def main():
     desc = 'Read the width, height, and rotation of images.'
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('-v', '--verbose', action='count', default=0)
-    parser.add_argument('filename', help='source image')
+    parser.add_argument('filenames', nargs='+',
+            help='source image(s)')
     args = parser.parse_args()
 
     # logging config
@@ -103,10 +104,11 @@ def main():
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
 
-    with open(args.filename, 'rb') as fp:
-        png = PNGFile(fp)
-    x, y = png.size
-    print('%s\n  width: %d\n  height: %d' % (args.filename, x, y))
+    for filename in args.filenames:
+        with open(filename, 'rb') as fp:
+            png = PNGFile(fp)
+        x, y = png.size
+        print('%s\n  width: %d\n  height: %d' % (filename, x, y))
 
 
 if '__main__' == __name__:
