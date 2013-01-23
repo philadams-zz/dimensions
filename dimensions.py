@@ -3,7 +3,7 @@
 """
 Phil Adams http://philadams.net
 
-A pure Python library for reading the width, height, and rotation of PNG images.
+A pure Python library for reading the width and height of PNG images.
 
 See README.txt for details.
 """
@@ -73,15 +73,15 @@ class PNGFile(object):
 
     def IHDR_data(self):
         dim = struct.Struct('>L')
-        sbyte = struct.Struct('c')
+        s = struct.Struct('c')
         data = {}
         data['width'] = dim.unpack(self.fp.read(dim.size))[0]
         data['height'] = dim.unpack(self.fp.read(dim.size))[0]
-        data['bit_depth'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
-        data['color_type'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
-        data['compression_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
-        data['filter_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
-        data['interlace_method'] = ord(sbyte.unpack(self.fp.read(sbyte.size))[0])
+        data['bit_depth'] = ord(s.unpack(self.fp.read(s.size))[0])
+        data['color_type'] = ord(s.unpack(self.fp.read(s.size))[0])
+        data['compression_method'] = ord(s.unpack(self.fp.read(s.size))[0])
+        data['filter_method'] = ord(s.unpack(self.fp.read(s.size))[0])
+        data['interlace_method'] = ord(s.unpack(self.fp.read(s.size))[0])
         return data
 
 
