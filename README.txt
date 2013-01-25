@@ -16,21 +16,25 @@ usage
 For a single image:
 
     > dimensions src/sample.png
-    src/sample.png (405, 239)
+    src/sample.png
+      width: 405
+      height: 239
 
-Wildcards also work (the escape '\' is only for PyPi RST...):
+Wildcards also work (escape \* in markdown for PyPi RST...):
 
     > dimensions src/\*.png
-    src/sample.png (405, 239)
-    src/sample2.png (473, 469)
+    src/sample.png
+      width: 405
+      height: 239
+    src/sample2.png
+      width: 473
+      height: 469
 
 As always, full details are available via `dimensions -h`.
 
 future
 ------
 
-- GIF
-- organize into ./dimensions/ dir by module
-- confirm working as importable module
+- better entry interface; confirm working as importable module
 - tests
 - JPEG
