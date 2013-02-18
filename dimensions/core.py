@@ -34,7 +34,7 @@ def get_dimensions(filenames):
                 raise NotImplementedError
 
             x, y = img.size
-            dims.append((x, y, filename))
+            dims.append((x, y, img.content_type, filename))
     return dims
 
 
@@ -72,8 +72,8 @@ def cli():
     logging.basicConfig(level=log_level)
 
     dims = get_dimensions(args.filenames)
-    for x, y, filename in dims:
-            print('%s\n  width: %d\n  height: %d' % (filename, x, y))
+    for x, y, content_type, filename in dims:
+        print('%s\n  width: %d\n  height: %d\n  content_type: %s' % (filename, x, y, content_type))
 
 if '__main__' == __name__:
     dimensions()

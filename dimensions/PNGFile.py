@@ -46,6 +46,7 @@ class PNGFile(object):
             # TODO: raise appropriate exception
             print('%s is not PNG signature' % magic)
             exit()
+        self.content_type = 'image/png'
 
         # parse chunk stream
         l, t, c = Chunk._length, Chunk._type, Chunk._crc

@@ -30,6 +30,7 @@ class GIFFile(object):
             # TODO: raise appropriate exception
             print('%s is not GIF signature' % magic)
             exit()
+        self.content_type = 'image/gif'
         hw = struct.Struct('h')
         x = hw.unpack(self.fp.read(2))[0]
         y = hw.unpack(self.fp.read(2))[0]

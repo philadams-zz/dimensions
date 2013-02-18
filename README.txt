@@ -19,6 +19,7 @@ For a single image:
     src/sample.png
       width: 405
       height: 239
+      content_type: image/png
 
 Wildcards also work (escape \* in markdown for PyPi RST...):
 
@@ -26,16 +27,21 @@ Wildcards also work (escape \* in markdown for PyPi RST...):
     src/sample.png
       width: 405
       height: 239
+      content_type: image/png
     src/sample2.png
       width: 473
       height: 469
+      content_type: image/png
 
 As always, full details are available via `dimensions -h`.
 
-In Python code, simply
+In Python code, simply call `dimensions.dimensions`. If you provide a
+sequence of filenames, you get back a sequence of tuples; if you provide
+just a single filename, you get back a single tuple.
 
     import dimensions
     dims = dimensions.dimensions('./src/sample.png')
+    # (405, 239, 'image/png', './src/sample.png')
 
 future
 ------
