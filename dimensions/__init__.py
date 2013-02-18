@@ -1,1 +1,1 @@
-from .core import dimensions
+from .core import dimensions, cli

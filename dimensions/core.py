@@ -16,7 +16,11 @@ import PNGFile
 import GIFFile
 
 
-def dimensions():
+def dimensions(fname):
+    pass
+
+
+def cli():
     import argparse
 
     # populate and parse command line options
