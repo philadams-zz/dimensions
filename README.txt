@@ -32,9 +32,14 @@ Wildcards also work (escape \* in markdown for PyPi RST...):
 
 As always, full details are available via `dimensions -h`.
 
+In Python code, simply
+
+    import dimensions
+    dims = dimensions.dimensions('./src/sample.png')
+
 future
 ------
 
-- better entry interface; confirm working as importable module
+- also return content_type
 - tests
 - JPEG

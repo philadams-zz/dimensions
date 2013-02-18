@@ -16,8 +16,39 @@ import PNGFile
 import GIFFile
 
 
-def dimensions(fname):
-    pass
+def get_dimensions(filenames):
+    """given a sequence of filenames, compute dimensions
+    return sequence of tuples (x, y, content_type, filename)"""
+
+    dims = []
+    for filename in filenames:
+        with open(filename, 'rb') as fp:
+
+            if fp.read(len(PNGFile.SIGNATURE)) == PNGFile.SIGNATURE:
+                fp.seek(0)
+                img = PNGFile.PNGFile(fp)
+            elif fp.read(len(GIFFile.SIGNATURE[0])) not in GIFFile.SIGNATURE:
+                fp.seek(0)
+                img = GIFFile.GIFFile(fp)
+            else:
+                raise NotImplementedError
+
+            x, y = img.size
+            dims.append((x, y, filename))
+    return dims
+
+
+def dimensions(filenames):
+    """given a filename or list of filenames,
+    return a tuple or sequence of tuples (x, y, filename)"""
+
+    single = type(filenames) is str
+    if single:
+        filenames = [filenames]
+    dims = get_dimensions(filenames)
+    if single:
+        dims = dims[0]
+    return dims
 
 
 def cli():
@@ -40,19 +71,8 @@ def cli():
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
 
-    for filename in args.filenames:
-        with open(filename, 'rb') as fp:
-
-            if fp.read(len(PNGFile.SIGNATURE)) == PNGFile.SIGNATURE:
-                fp.seek(0)
-                img = PNGFile.PNGFile(fp)
-            elif fp.read(len(GIFFile.SIGNATURE[0])) not in GIFFile.SIGNATURE:
-                fp.seek(0)
-                img = GIFFile.GIFFile(fp)
-            else:
-                raise NotImplementedError
-
-            x, y = img.size
+    dims = get_dimensions(args.filenames)
+    for x, y, filename in dims:
             print('%s\n  width: %d\n  height: %d' % (filename, x, y))
 
 if '__main__' == __name__:
