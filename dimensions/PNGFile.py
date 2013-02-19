@@ -11,7 +11,7 @@ import logging
 import struct
 
 
-SIGNATURE = '\211PNG\r\n\032\n'
+SIGNATURE = ('\211PNG\r\n\032\n')
 
 
 class Chunk(object):

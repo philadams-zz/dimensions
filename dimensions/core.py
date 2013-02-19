@@ -14,6 +14,7 @@ import struct
 
 import PNGFile
 import GIFFile
+import JPEGFile
 
 
 def get_dimensions(filenames):
@@ -22,19 +23,25 @@ def get_dimensions(filenames):
 
     dims = []
     for filename in filenames:
+        implemented = False
         with open(filename, 'rb') as fp:
 
-            if fp.read(len(PNGFile.SIGNATURE)) == PNGFile.SIGNATURE:
+            img_types = (PNGFile, GIFFile, JPEGFile)
+            for img_type in img_types:
+                sig = str(getattr(img_type, 'SIGNATURE')[0])
+                magic = fp.read(len(sig))
                 fp.seek(0)
-                img = PNGFile.PNGFile(fp)
-            elif fp.read(len(GIFFile.SIGNATURE[0])) not in GIFFile.SIGNATURE:
-                fp.seek(0)
-                img = GIFFile.GIFFile(fp)
-            else:
+                if magic == sig:
+                    cls = img_type.__name__.split('.')[-1]
+                    img = getattr(img_type, cls)(fp)
+                    x, y = img.size
+                    dims.append((x, y, img.content_type, filename))
+                    implemented = True
+                    break
+            if not implemented:
+                # might want to fail silently, or print error to stdout...
+                print('cannot handle file: %s' % filename)
                 raise NotImplementedError
-
-            x, y = img.size
-            dims.append((x, y, img.content_type, filename))
     return dims
 
 

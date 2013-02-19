@@ -32,10 +32,10 @@ it_reads_pngs() {
   content-type: image/png"
 }
 
-it_reads_jpgs() {
-  jpg="$($dimensions ../src/sample.jpg)"
-  test "$jpg" = "../src/sample.jpg
-  width: 100
-  height: 100
+it_reads_jpegs() {
+  jpeg="$($dimensions ../src/sample.jpg)"
+  test "$jpeg" = "../src/sample.jpg
+  width: 313
+  height: 234
   content-type: image/jpeg"
 }

@@ -47,5 +47,4 @@ future
 ------
 
 - test for in-python codes
-- JPEG
 - release newer version to PyPi
