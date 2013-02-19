@@ -20,19 +20,22 @@ it_reads_gifs() {
   gif="$($dimensions ../src/sample.gif)"
   test "$gif" = "../src/sample.gif
   width: 250
-  height: 297"
+  height: 297
+  content-type: image/gif"
 }
 
 it_reads_pngs() {
   png="$($dimensions ../src/sample.png)"
   test "$png" = "../src/sample.png
   width: 405
-  height: 239"
+  height: 239
+  content-type: image/png"
 }
 
 it_reads_jpgs() {
   jpg="$($dimensions ../src/sample.jpg)"
   test "$jpg" = "../src/sample.jpg
   width: 100
-  height: 100"
+  height: 100
+  content-type: image/jpeg"
 }

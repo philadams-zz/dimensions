@@ -18,7 +18,7 @@ import GIFFile
 
 def get_dimensions(filenames):
     """given a sequence of filenames, compute dimensions
-    return sequence of tuples (x, y, content_type, filename)"""
+    return sequence of tuples (x, y, content-type, filename)"""
 
     dims = []
     for filename in filenames:
@@ -73,7 +73,7 @@ def cli():
 
     dims = get_dimensions(args.filenames)
     for x, y, content_type, filename in dims:
-        print('%s\n  width: %d\n  height: %d\n  content_type: %s' % (filename, x, y, content_type))
+        print('%s\n  width: %d\n  height: %d\n  content-type: %s' % (filename, x, y, content_type))
 
 if '__main__' == __name__:
     dimensions()

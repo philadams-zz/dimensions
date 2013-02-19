@@ -46,6 +46,6 @@ just a single filename, you get back a single tuple.
 future
 ------
 
-- also return content_type
-- tests
+- test for in-python codes
 - JPEG
+- release newer version to PyPi
