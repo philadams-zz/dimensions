@@ -17,24 +17,24 @@ it_shows_help_with_no_argv() {
 }
 
 it_reads_gifs() {
-  gif="$($dimensions ../src/sample.gif)"
-  test "$gif" = "../src/sample.gif
+  gif="$($dimensions ../sample/sample.gif)"
+  test "$gif" = "../sample/sample.gif
   width: 250
   height: 297
   content-type: image/gif"
 }
 
 it_reads_pngs() {
-  png="$($dimensions ../src/sample.png)"
-  test "$png" = "../src/sample.png
+  png="$($dimensions ../sample/sample.png)"
+  test "$png" = "../sample/sample.png
   width: 405
   height: 239
   content-type: image/png"
 }
 
 it_reads_jpegs() {
-  jpeg="$($dimensions ../src/sample.jpg)"
-  test "$jpeg" = "../src/sample.jpg
+  jpeg="$($dimensions ../sample/sample.jpg)"
+  test "$jpeg" = "../sample/sample.jpg
   width: 313
   height: 234
   content-type: image/jpeg"
