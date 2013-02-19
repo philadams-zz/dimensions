@@ -46,5 +46,4 @@ just a single filename, you get back a single tuple.
 future
 ------
 
-- test for in-python codes
 - release newer version to PyPi
