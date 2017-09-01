@@ -49,7 +49,7 @@ def dimensions(filenames):
     """given a filename or list of filenames,
     return a tuple or sequence of tuples (x, y, filename)"""
 
-    single = type(filenames) is str
+    single = isinstance(filenames, (str, unicode))
     if single:
         filenames = [filenames]
     dims = get_dimensions(filenames)
